@@ -12,6 +12,11 @@ fn main() {
     println!("With text:\n{}", contents);
 }
 
+struct Config {
+    query: String,
+    filename: String,
+}
+
 fn parse_config() -> (String, String) {
     let args: Vec<String> = env::args().collect();
 
