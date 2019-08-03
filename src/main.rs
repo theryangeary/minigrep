@@ -2,12 +2,12 @@ use std::env;
 use std::fs;
 
 fn main() {
-    let (query, filename) = parse_config();
+    let config = parse_config();
 
-    println!("Search for {}", query);
-    println!("In file {}", filename);
+    println!("Search for {}", config.query);
+    println!("In file {}", config.filename);
 
-    let contents = fs::read_to_string(filename).expect("Something went wrong reading the file");
+    let contents = fs::read_to_string(config.filename).expect("Something went wrong reading the file");
 
     println!("With text:\n{}", contents);
 }
@@ -17,11 +17,11 @@ struct Config {
     filename: String,
 }
 
-fn parse_config() -> (String, String) {
+fn parse_config() -> Config {
     let args: Vec<String> = env::args().collect();
 
     let query = String::from(&args[1]);
     let filename = String::from(&args[2]);
 
-    (query, filename)
+    Config { query, filename }
 }
