@@ -2,7 +2,7 @@ use std::env;
 use std::fs;
 
 fn main() {
-    let config = parse_config();
+    let config = Config::new();
 
     println!("Search for {}", config.query);
     println!("In file {}", config.filename);
@@ -17,11 +17,13 @@ struct Config {
     filename: String,
 }
 
-fn parse_config() -> Config {
-    let args: Vec<String> = env::args().collect();
+impl Config {
+    fn new() -> Config {
+        let args: Vec<String> = env::args().collect();
 
-    let query = String::from(&args[1]);
-    let filename = String::from(&args[2]);
+        let query = String::from(&args[1]);
+        let filename = String::from(&args[2]);
 
-    Config { query, filename }
+        Config { query, filename }
+    }
 }
