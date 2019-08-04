@@ -37,8 +37,8 @@ impl Config {
 
     fn build(args: Vec<String>) -> Result<Config, &'static str> {
         Ok(Config {
-            query: String::from(&args[args.len() - 1]),
-            filename: String::from(&args[args.len()]),
+            query: String::from(&args[args.len() - 2]),
+            filename: String::from(&args[args.len() - 1]),
             insensitive: false,
         })
     }
