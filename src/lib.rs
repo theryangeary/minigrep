@@ -50,11 +50,7 @@ mod tests {
 
     #[test]
     fn case_sensitive() {
-        let config = Config {
-            query: String::from("duct"),
-            filename: String::from(""),
-            insensitive: false,
-        };
+        let config = Config::build(vec![String::from("duct"), String::from("")]).unwrap();
         let contents = "\
 Rust:
 safe, fast, productive.
