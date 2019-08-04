@@ -15,7 +15,10 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 pub fn search<'a>(config: &Config, contents: &'a str) -> Vec<&'a str> {
     contents
         .lines()
-        .filter(|line| line.contains(&config.query))
+        .filter(|line| match config.insensitive {
+            false => line.contains(&config.query),
+            true => line.to_lowercase().contains(&config.query.to_lowercase()),
+        })
         .collect()
 }
 
@@ -39,7 +42,12 @@ impl Config {
         Ok(Config {
             query: String::from(&args[args.len() - 2]),
             filename: String::from(&args[args.len() - 1]),
-            insensitive: false,
+            insensitive: args
+                .iter()
+                .filter(|flag| **flag == String::from("-i"))
+                .collect::<Vec<&String>>()
+                .len()
+                > 0,
         })
     }
 }
@@ -58,5 +66,22 @@ Pick three.
 Duct tape";
 
         assert_eq!(vec!["safe, fast, productive."], search(&config, contents));
+    }
+
+    #[test]
+    fn case_insensitive() {
+        let config = Config::build(vec![
+            String::from("-i"),
+            String::from("rUsT"),
+            String::from(""),
+        ])
+        .unwrap();
+        let contents = "\
+Rust:
+safe, fast, productive.
+Pick three.
+Trust me.";
+
+        assert_eq!(vec!["Rust:", "Trust me."], search(&config, contents));
     }
 }
