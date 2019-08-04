@@ -32,11 +32,15 @@ impl Config {
             return Err("not enough arguments");
         }
 
-        let query = String::from(&args[1]);
-        let filename = String::from(&args[2]);
-        let insensitive = false;
+        Config::build(args)
+    }
 
-        Ok(Config { query, filename, insensitive })
+    fn build(args: Vec<String>) -> Result<Config, &'static str> {
+        Ok(Config {
+            query: String::from(&args[args.len() - 1]),
+            filename: String::from(&args[args.len()]),
+            insensitive: false,
+        })
     }
 }
 
